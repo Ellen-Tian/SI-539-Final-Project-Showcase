@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SI 539 Final Project - Aohua Tian</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* 1. UMICH BRAND VARIABLES */
+        :root {
+            --umich-blue: #00274C;
+            --umich-maize: #FFCB05;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --dark-blue: #001933;
+            /* Slightly darker for gradients */
+        }
+
+        /* 2. CORE SETUP */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin: 0;
+            padding: 40px 0;
+            font-family: 'Urbanist', sans-serif;
+        }
+
+        /* Slide Container - 16:9 Aspect Ratio (1280x720) */
+        .slide-container {
+            background-color: var(--umich-blue);
+            background: linear-gradient(135deg, var(--umich-blue) 0%, var(--dark-blue) 100%);
+            color: var(--white);
+            border-radius: 8px;
+            /* Sharper corners for academic look */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            height: 720px;
+            width: 1280px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+
+        /* Decorative Strip (Maize) */
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: var(--umich-maize);
+            z-index: 10;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            color: var(--umich-maize);
+            font-size: 16px;
+            font-family: 'Fira Code', monospace;
+            font-weight: bold;
+            z-index: 11;
+        }
+
+        /* 3. TYPOGRAPHY */
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .slide-title {
+            font-size: 48px;
+            color: var(--umich-maize);
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            width: 100%;
+        }
+
+        p,
+        li {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #E0E0E0;
+        }
+
+        strong {
+            color: var(--umich-maize);
+        }
+
+        /* Code Snippet Styling */
+        pre {
+            background: #001222;
+            border: 1px solid #334;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            color: #a9b7c6;
+            border-left: 4px solid var(--umich-maize);
+            overflow: hidden;
+        }
+
+        .code-keyword {
+            color: #cc7832;
+        }
+
+        /* Orange */
+        .code-function {
+            color: var(--umich-maize);
+        }
+
+        /* Yellow */
+        .code-string {
+            color: #6a8759;
+        }
+
+        /* Green */
+
+        /* 4. LAYOUT UTILITIES */
+        .content-area {
+            flex-grow: 1;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .split-layout {
+            display: grid;
+            grid-template-columns: 45% 50%;
+            /* Text left, Image right */
+            gap: 5%;
+            height: 100%;
+        }
+
+        .placeholder-img {
+            background-color: #E0E0E0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #555;
+            font-weight: bold;
+            border: 2px dashed #999;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            margin-bottom: 20px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '\f0da';
+            /* FontAwesome Caret */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--umich-maize);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Slide Specific Styles */
+        .cover-layout {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            background-image: radial-gradient(circle at center, #003666 0%, var(--umich-blue) 70%);
+        }
+
+        .access-card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .access-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid var(--umich-maize);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide-container">
+        <div class="cover-layout">
+            <h1 style="font-size: 72px; color: var(--umich-maize); margin-bottom: 10px;">Academic Portfolio</h1>
+            <h2 style="font-size: 32px; color: var(--white); font-weight: 300; margin-bottom: 60px;">SI 539 Final
+                Project Showcase</h2>
+
+            <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 30px; display: flex; gap: 60px;">
+                <div>
+                    <p style="font-size: 14px; text-transform: uppercase; color: #888; margin-bottom: 5px;">Student</p>
+                    <p style="margin: 0; font-weight: 600;">Aohua Tian</p>
+                </div>
+                <div>
+                    <p style="font-size: 14px; text-transform: uppercase; color: #888; margin-bottom: 5px;">Course</p>
+                    <p style="margin: 0; font-weight: 600;">SI 539: Web Design</p>
+                </div>
+                <div>
+                    <p style="font-size: 14px; text-transform: uppercase; color: #888; margin-bottom: 5px;">Date</p>
+                    <p style="margin: 0; font-weight: 600;">Fall 2025</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 50px;">
+                <i class="fa-solid fa-graduation-cap" style="font-size: 40px; color: var(--umich-maize);"></i>
+            </div>
+        </div>
+        <div class="page-number">1 / 8</div>
+    </div>
+
+    <!-- SLIDE 2: HOME PAGE -->
+    <div class="slide-container">
+        <div class="content-area">
+            <h2 class="slide-title">1. Home Page: The Hub</h2>
+            <div class="split-layout">
+                <div>
+                    <p>Designed as the central navigation hub, focusing on visual hierarchy and immediate information
+                        access.</p>
+                    <ul class="feature-list">
+                        <li><strong>Hero Section:</strong> Introduces professional identity immediately.</li>
+                        <li><strong>CSS Grid Layout:</strong> The "Research Interests" section utilizes a responsive
+                            grid that adapts to screen width.</li>
+                        <li><strong>Skip Link:</strong> Implemented "Skip to Main Content" for keyboard accessibility.
+                        </li>
+                        <li><strong>Navigation:</strong> Consistent header linking to all sub-pages.</li>
+                    </ul>
+                </div>
+                <img src="home.png" alt="Home Page Screenshot"
+                    style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px; border: 1px solid #555;">
+            </div>
+        </div>
+        <div class="page-number">2 / 8</div>
+    </div>
+
+    <!-- SLIDE 3: RESEARCH PAGE -->
+    <div class="slide-container">
+        <div class="content-area">
+            <h2 class="slide-title">2. Research Page: Visual Gallery</h2>
+            <div class="split-layout">
+                <div>
+                    <p>Showcases academic projects using a card-based layout tailored for visual density.</p>
+                    <ul class="feature-list">
+                        <li><strong>Card Layout:</strong> Each project is encapsulated in a semantic article tag.</li>
+                        <li><strong>Image Heavy:</strong> Optimized for displaying maps and diagrams related to
+                            Geospatial Data Science.</li>
+                        <li><strong>Interactivity:</strong> Features click-to-expand functionality (detailed in Slide
+                            7).</li>
+                        <li><strong>Semantic HTML:</strong> Used <code>&lt;figure&gt;</code> and
+                            <code>&lt;figcaption&gt;</code> for proper image semantics.
+                        </li>
+                    </ul>
+                </div>
+                <img src="research-1.png" alt="Research Page Screenshot"
+                    style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px; border: 1px solid #555;">
+            </div>
+        </div>
+        <div class="page-number">3 / 8</div>
+    </div>
+
+    <!-- SLIDE 4: PUBLICATIONS PAGE -->
+    <div class="slide-container">
+        <div class="content-area">
+            <h2 class="slide-title">3. Publications: Structured List</h2>
+            <div class="split-layout">
+                <div>
+                    <p>A clean, text-forward layout designed for readability and quick scanning of citations.</p>
+                    <ul class="feature-list">
+                        <li><strong>Typography:</strong> prioritized legibility with high contrast and proper
+                            line-height.</li>
+                        <li><strong>External Links:</strong> Clear visual indicators for DOI and PDF links.</li>
+                        <li><strong>Reverse Chronological:</strong> Logic ordering of content for academic relevance.
+                        </li>
+                        <li><strong>Responsive:</strong> Text wraps and stacks gracefully on mobile devices.</li>
+                    </ul>
+                </div>
+                <img src="publication.png" alt="Publications Page Screenshot"
+                    style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px; border: 1px solid #555;">
+            </div>
+        </div>
+        <div class="page-number">4 / 8</div>
+    </div>
+
+    <!-- SLIDE 5: EXPERIENCE PAGE -->
+    <div class="slide-container">
+        <div class="content-area">
+            <h2 class="slide-title">4. Experience: Timeline Layout</h2>
+            <div class="split-layout">
+                <div>
+                    <p>Displays professional history using a structured, semantic approach.</p>
+                    <ul class="feature-list">
+                        <li><strong>Flexbox Architecture:</strong> Uses CSS Flexbox to align dates (left) and details
+                            (right).</li>
+                        <li><strong>Mobile Adaptation:</strong> On screens < 768px, the layout shifts to a vertical
+                                stack for better readability.</li>
+                        <li><strong>Hierarchy:</strong> Clear distinction between Role, Company, and Description using
+                            <code>h3</code> and <code>h4</code> tags.
+                        </li>
+                    </ul>
+                </div>
+                <img src="experience.png" alt="Experience Page Screenshot"
+                    style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px; border: 1px solid #555;">
+            </div>
+        </div>
+        <div class="page-number">5 / 8</div>
+    </div>
+
+    <!-- SLIDE 6: CONTACT PAGE -->
+    <div class="slide-container">
+        <div class="content-area">
+            <h2 class="slide-title">5. Contact: Forms & Layout</h2>
+            <div class="split-layout">
+                <div>
+                    <p>A functional gateway for professional connection.</p>
+                    <ul class="feature-list">
+                        <li><strong>Accessible Forms:</strong> All inputs have associated <code>&lt;label&gt;</code>
+                            tags (Explicit association).</li>
+                        <li><strong>Focus States:</strong> Custom CSS focus rings for keyboard navigation visibility.
+                        </li>
+                        <li><strong>Layout:</strong> Centralized container with max-width for readability on large
+                            screens.</li>
+                        <li><strong>Social Links:</strong> Icon-based links to LinkedIn and GitHub with
+                            <code>aria-label</code> attributes.
+                        </li>
+                    </ul>
+                </div>
+                <img src="contact.png" alt="Contact Page Screenshot"
+                    style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px; border: 1px solid #555;">
+            </div>
+        </div>
+        <div class="page-number">6 / 8</div>
+    </div>
+
+    <!-- SLIDE 7: JAVASCRIPT EFFECTS -->
+    <div class="slide-container">
+        <div class="content-area">
+            <h2 class="slide-title">JavaScript Implementation</h2>
+            <div class="split-layout">
+                <div>
+                    <h3 style="color: var(--umich-maize); margin-bottom: 10px;">1. Image Modal (Lightbox)</h3>
+                    <p style="font-size: 16px;">Allows users to view detailed research figures without leaving the page
+                        context.</p>
+                    <pre style="margin-bottom: 20px;">
+<span class="code-function">function</span> openModal(imgSrc, captionHtml) {
+  <span class="code-keyword">const</span> modal = document.getElementById(<span class="code-string">"imgModal"</span>);
+  modal.style.display = <span class="code-string">"block"</span>;
+  modalImg.src = imgSrc;
+}
+</pre>
+
+                    <h3 style="color: var(--umich-maize); margin-bottom: 10px;">2. Smart Scroll Navbar</h3>
+                    <p style="font-size: 16px;">Hides navbar on scroll down to maximize screen real estate on mobile.
+                    </p>
+                    <pre>
+<span class="code-keyword">if</span> (diff > hideThreshold) {
+   header.classList.add(<span class="code-string">"hidden"</span>); <span class="code-comment">// Hide</span>
+} <span class="code-keyword">else if</span> (diff < -showThreshold) {
+   header.classList.remove(<span class="code-string">"hidden"</span>); <span class="code-comment">// Show</span>
+}
+</pre>
+                </div>
+                <img src="research-2.png" alt="Research Page Screenshot"
+                    style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px; border: 1px solid #555;">
+            </div>
+        </div>
+        <div class="page-number">7 / 8</div>
+    </div>
+
+    <!-- SLIDE 8: ACCESSIBILITY -->
+    <div class="slide-container">
+        <div class="content-area">
+            <h2 class="slide-title">Accessibility Compliance (POUR)</h2>
+            <p style="margin-bottom: 30px;">The site was rigorously tested against WCAG 2.1 AA standards.</p>
+
+            <div class="access-card-grid">
+                <div class="access-card">
+                    <h3><i class="fa-solid fa-eye"></i> Perceivable</h3>
+                    <p style="font-size: 16px; margin-top: 10px;">
+                        - All non-text content (images) has <code>alt</code> text.<br>
+                        - Color contrast ratios meet or exceed 4.5:1 (UMich Blue/Maize/White).
+                    </p>
+                </div>
+
+                <div class="access-card">
+                    <h3><i class="fa-solid fa-keyboard"></i> Operable</h3>
+                    <p style="font-size: 16px; margin-top: 10px;">
+                        - "Skip to Main Content" link provided.<br>
+                        - All interactive elements (Modals, Forms) are keyboard navigable.
+                    </p>
+                </div>
+
+                <div class="access-card">
+                    <h3><i class="fa-solid fa-brain"></i> Understandable</h3>
+                    <p style="font-size: 16px; margin-top: 10px;">
+                        - Consistent navigation across all 5 pages.<br>
+                        - Error prevention in forms (Required fields marked).
+                    </p>
+                </div>
+
+                <div class="access-card">
+                    <h3><i class="fa-solid fa-code"></i> Robust</h3>
+                    <p style="font-size: 16px; margin-top: 10px;">
+                        - Valid HTML5 markup (checked via W3C Validator).<br>
+                        - Compatible with screen readers and mobile browsers.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="page-number">8 / 8</div>
+    </div>
+
+</body>
+
+</html>
+```
